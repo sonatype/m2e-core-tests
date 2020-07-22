@@ -506,4 +506,19 @@ public class NexusIndexManagerTest extends AbstractNexusIndexManagerTest {
     }
   }
 
+  public void testProjectHasIndexedRemoteRepos() throws Exception {
+
+    IProject project = importProject("projects/projectimport/p002/pom.xml", new ResolverConfiguration());
+    waitForJobsToComplete();
+
+    IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().getProject(project);
+
+    assertFalse(indexManager.hasIndexedRemoteRepos(facade, monitor));
+
+    updateIndex(REPO_URL_ECLIPSE);
+
+    assertTrue(indexManager.hasIndexedRemoteRepos(facade, monitor));
+
+  }
+
 }
